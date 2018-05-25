@@ -6,7 +6,8 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
 fun main(args: Array<String>) {
-    val server = embeddedServer(Netty, port = 8080) {
+
+    val server = embeddedServer(Netty, System.getenv("PORT")?.toInt() ?: 8080) {
         routing {
             get("/") {
                 call.respondText("Hello World!", ContentType.Text.Plain)
