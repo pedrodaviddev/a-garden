@@ -33,11 +33,16 @@ fun main(args: Array<String>) {
             }
             post("/plant") {
                 val received = call.receive<Plant>()
-                listPlants.add(received)
                 PlantRepository().createPlant(received)
             }
             get("/demo") {
                 call.respondText("HELLO WORLD!")
+            }
+            post("/sample") {
+                SampleRepository().addSample(call.receive())
+            }
+            get("/sample/{id}") {
+                call.respond(SampleRepository().getSamples(Integer.parseInt(call.parameters["id"])))
             }
         }
     }
@@ -56,6 +61,7 @@ fun createAllTables() {
         create(SampleTable)
     }
 }
+
 private fun hikari(): HikariDataSource {
     val config = HikariConfig()
     config.driverClassName = "org.h2.Driver"
