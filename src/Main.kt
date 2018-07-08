@@ -1,5 +1,3 @@
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
@@ -12,14 +10,8 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>) {
-    val listPlants = mutableListOf<Plant>()
-    createAllTables()
 
     val server = embeddedServer(Netty, System.getenv("PORT")?.toInt() ?: 8080) {
         install(ContentNegotiation) {
@@ -49,26 +41,3 @@ fun main(args: Array<String>) {
     server.start(wait = true)
 }
 
-fun createAllTables() {
-
-    Database.connect(hikari())
-
-    transaction {
-        // print sql to std-out
-        logger.addLogger(StdOutSqlLogger)
-
-        create(PlantTable)
-        create(SampleTable)
-    }
-}
-
-private fun hikari(): HikariDataSource {
-    val config = HikariConfig()
-    config.driverClassName = "org.h2.Driver"
-    config.jdbcUrl = "jdbc:h2:mem:test"
-    config.maximumPoolSize = 3
-    config.isAutoCommit = false
-    config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-    config.validate()
-    return HikariDataSource(config)
-}
