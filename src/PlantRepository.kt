@@ -21,7 +21,8 @@ class PlantRepository {
 
 
     private fun toPlant(row: ResultRow): Plant =
-            Plant(row[PlantTable.name],
+            Plant(row[PlantTable.id].value,
+                    row[PlantTable.name],
                     row[PlantTable.requiredHumidity],
                     row[PlantTable.temperature].toDouble(),
                     row[PlantTable.sunLight].toDouble())
