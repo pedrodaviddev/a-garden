@@ -3,6 +3,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.update
 
 class SampleRepository {
     suspend fun addSample(sample: Sample) {
@@ -11,6 +12,9 @@ class SampleRepository {
                 it[plant] = EntityID(sample.plant, PlantTable)
                 it[temperature] = sample.temperature.toLong()
                 it[humidity] = sample.humidity.toLong()
+            }
+            PlantTable.update({PlantTable.id eq sample.plant}){
+                it[temperature] = sample.temperature.toLong()
             }
         }
     }
