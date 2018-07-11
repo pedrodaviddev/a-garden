@@ -10,6 +10,7 @@ class PlantRepository {
                 it[name] = plant.name
                 it[requiredHumidity] = plant.requiredHumidity
                 it[temperature] = plant.temperature.toLong()
+                it[configuration] = plant.configuration
                 it[sunLight] = plant.sunLight.toLong()
             }
         }
@@ -24,6 +25,7 @@ class PlantRepository {
             Plant(row[PlantTable.id].value,
                     row[PlantTable.name],
                     row[PlantTable.requiredHumidity],
+                    row[PlantTable.configuration],
                     row[PlantTable.temperature].toDouble(),
                     row[PlantTable.sunLight].toDouble())
 }
