@@ -7,6 +7,7 @@ import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.ktor.routing.put
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -35,6 +36,9 @@ fun main(args: Array<String>) {
             }
             get("/sample/{id}") {
                 call.respond(SampleRepository().getSamples(Integer.parseInt(call.parameters["id"])))
+            }
+            put("/plant/{id}"){
+                PlantRepository().updatePlant(call.receive())
             }
         }
     }

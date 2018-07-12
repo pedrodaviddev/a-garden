@@ -2,6 +2,7 @@ import DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class PlantRepository {
     suspend fun createPlant(plant: Plant) {
@@ -28,4 +29,12 @@ class PlantRepository {
                     row[PlantTable.configuration],
                     row[PlantTable.temperature].toDouble(),
                     row[PlantTable.sunLight].toDouble())
+
+    suspend fun updatePlant(plant: Plant) = dbQuery {
+        PlantTable.update({ PlantTable.id eq plant.id }) {
+            it[configuration] = plant.configuration
+            it[requiredHumidity] = plant.requiredHumidity
+            it[changes] = true
+        }
+    }
 }
