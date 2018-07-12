@@ -10,7 +10,7 @@ import kotlin.coroutines.experimental.CoroutineContext
 object DatabaseFactory {
 
     init {
-        Database.connect(hikari())
+        Database.connect(hikariTest())
         transaction {
             create(PlantTable)
             create(SampleTable)
@@ -23,6 +23,16 @@ object DatabaseFactory {
         config.jdbcUrl = "jdbc:postgresql://ec2-54-217-205-90.eu-west-1.compute.amazonaws.com:5432/d41c8gkcpl44pe"
         config.username = "ltznucrbbzypnf"
         config.password = "3d371533c7286962146147d61bf2b715f03ed85de0c61dbd922acef45ad599cc"
+        config.maximumPoolSize = 3
+        config.validate()
+        return HikariDataSource(config)
+    }
+    private fun hikariTest(): HikariDataSource {
+        val config = HikariConfig()
+        config.driverClassName = "org.postgresql.Driver"
+        config.jdbcUrl = "jdbc:postgresql://localhost/testdb"
+        config.username = "postgres"
+        config.password = ""
         config.maximumPoolSize = 3
         config.validate()
         return HikariDataSource(config)

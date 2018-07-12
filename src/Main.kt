@@ -37,8 +37,10 @@ fun main(args: Array<String>) {
             get("/sample/{id}") {
                 call.respond(SampleRepository().getSamples(Integer.parseInt(call.parameters["id"])))
             }
-            put("/plant/{id}"){
-                PlantRepository().updatePlant(call.receive())
+            put("/plant/{id}") {
+                PlantRepository().updatePlant(
+                        call.receive<Plant>().copy(id = Integer.parseInt(call.parameters["id"]))
+                )
             }
         }
     }
