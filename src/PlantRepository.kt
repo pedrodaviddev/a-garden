@@ -13,6 +13,7 @@ class PlantRepository {
                 it[temperature] = plant.temperature.toLong()
                 it[configuration] = plant.configuration
                 it[sunLight] = plant.sunLight.toLong()
+                it[changes] = false
             }
         }
     }
