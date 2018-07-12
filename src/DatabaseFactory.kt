@@ -10,7 +10,7 @@ import kotlin.coroutines.experimental.CoroutineContext
 object DatabaseFactory {
 
     init {
-        Database.connect(hikariTest())
+        Database.connect(hikari())
         transaction {
             create(PlantTable)
             create(SampleTable)
