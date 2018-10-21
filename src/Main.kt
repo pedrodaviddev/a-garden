@@ -24,6 +24,9 @@ fun main(args: Array<String>) {
             get("/plants") {
                 call.respond(PlantRepository().getPlants())
             }
+            get("/plant/{id}"){
+                call.respond(PlantRepository().getPlant(Integer.parseInt(call.parameters["id"])))
+            }
             post("/plant") {
                 val received = call.receive<Plant>()
                 PlantRepository().createPlant(received)
@@ -41,6 +44,9 @@ fun main(args: Array<String>) {
                 PlantRepository().updatePlant(
                         call.receive<Plant>().copy(id = Integer.parseInt(call.parameters["id"]))
                 )
+            }
+            get(""){
+
             }
         }
     }

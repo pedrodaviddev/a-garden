@@ -1,8 +1,5 @@
 import DatabaseFactory.dbQuery
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.*
 
 class PlantRepository {
     suspend fun createPlant(plant: Plant) {
@@ -10,9 +7,10 @@ class PlantRepository {
             PlantTable.insert {
                 it[name] = plant.name
                 it[requiredHumidity] = plant.requiredHumidity
-                it[temperature] = plant.temperature.toLong()
                 it[configuration] = plant.configuration
+                it[temperature] = plant.temperature.toLong()
                 it[sunLight] = plant.sunLight.toLong()
+                it[humidity] = plant.humidity.toLong()
                 it[changes] = false
             }
         }
@@ -29,7 +27,8 @@ class PlantRepository {
                     row[PlantTable.requiredHumidity],
                     row[PlantTable.configuration],
                     row[PlantTable.temperature].toDouble(),
-                    row[PlantTable.sunLight].toDouble())
+                    row[PlantTable.sunLight].toDouble(),
+                    row[PlantTable.humidity].toDouble())
 
     suspend fun updatePlant(plant: Plant) = dbQuery {
         PlantTable.update({ PlantTable.id eq plant.id }) {
@@ -37,5 +36,9 @@ class PlantRepository {
             it[requiredHumidity] = plant.requiredHumidity
             it[changes] = true
         }
+    }
+
+    suspend fun getPlant(idPlant: Int): Plant = dbQuery {
+        PlantTable.select { PlantTable.id eq idPlant }.mapNotNull(::toPlant).first()
     }
 }

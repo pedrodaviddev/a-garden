@@ -6,5 +6,6 @@ object PlantTable : IntIdTable() {
     val configuration = integer("configuration")
     val temperature = long("temperature")
     val sunLight = long("sunLight")
+    val humidity = long("humidity")
     val changes = bool("changes")
 }
