@@ -50,7 +50,7 @@ fun main(args: Array<String>) {
                         .getPlant(Integer.parseInt(call.parameters["id"]))
                         .requiredHumidity)
             }
-            get("/config/humidity/{id}"){
+            get("/config/{id}"){
                 call.respond(PlantRepository()
                         .getPlant(Integer.parseInt(call.parameters["id"]))
                         .configuration)
