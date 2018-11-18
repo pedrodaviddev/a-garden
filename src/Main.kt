@@ -45,8 +45,10 @@ fun main(args: Array<String>) {
                         call.receive<Plant>().copy(id = Integer.parseInt(call.parameters["id"]))
                 )
             }
-            get(""){
-
+            get("/config/{id}"){
+                call.respond(PlantRepository()
+                        .getPlant(Integer.parseInt(call.parameters["id"]))
+                        .configuration)
             }
         }
     }
