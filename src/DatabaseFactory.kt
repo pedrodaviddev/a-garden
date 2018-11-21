@@ -5,6 +5,7 @@ import kotlinx.coroutines.experimental.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SchemaUtils.create
+import org.jetbrains.exposed.sql.SchemaUtils.drop
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.coroutines.experimental.CoroutineContext
 
@@ -13,8 +14,7 @@ object DatabaseFactory {
     init {
         Database.connect(hikari())
         transaction {
-            create(PlantTable)
-            create(SampleTable)
+            create(PlantTable,SampleTable,IrrigationTable)
         }
     }
 

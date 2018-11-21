@@ -2,6 +2,7 @@ import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
+import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
@@ -44,12 +45,20 @@ fun main(args: Array<String>) {
                 PlantRepository().updatePlant(
                         call.receive<Plant>().copy(id = Integer.parseInt(call.parameters["id"]))
                 )
+                call.respond(HttpStatusCode.OK)
             }
             get("/irrigate/{id}") {
                 val plant = PlantRepository().getPlant(Integer.parseInt(call.parameters["id"]))
-                call.respond(
-                        if (plant.shouldIrrigate()) plant.requiredHumidity
-                        else -1
+                call.respond(HttpStatusCode.OK,
+                        if (plant.shouldIrrigate()) {
+                            IrrigationRepository().registerIrrigation(plant)
+                            plant.requiredHumidity
+                        } else -1
+                )
+            }
+            get("/irrigation") {
+                call.respond(HttpStatusCode.OK,
+                       IrrigationRepository().getLastIrrigationList()
                 )
             }
 
@@ -57,4 +66,3 @@ fun main(args: Array<String>) {
     }
     server.start(wait = true)
 }
-
