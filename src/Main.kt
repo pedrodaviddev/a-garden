@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
             get("/plants") {
                 call.respond(PlantRepository().getPlants())
             }
-            get("/plant/{id}"){
+            get("/plant/{id}") {
                 call.respond(PlantRepository().getPlant(Integer.parseInt(call.parameters["id"])))
             }
             post("/plant") {
@@ -45,16 +45,14 @@ fun main(args: Array<String>) {
                         call.receive<Plant>().copy(id = Integer.parseInt(call.parameters["id"]))
                 )
             }
-            get("/reqhum/{id}"){
-                call.respond(PlantRepository()
-                        .getPlant(Integer.parseInt(call.parameters["id"]))
-                        .requiredHumidity)
+            get("/irrigate/{id}") {
+                val plant = PlantRepository().getPlant(Integer.parseInt(call.parameters["id"]))
+                call.respond(
+                        if (plant.shouldIrrigate()) plant.requiredHumidity
+                        else -1
+                )
             }
-            get("/config/{id}"){
-                call.respond(PlantRepository()
-                        .getPlant(Integer.parseInt(call.parameters["id"]))
-                        .configuration)
-            }
+
         }
     }
     server.start(wait = true)
