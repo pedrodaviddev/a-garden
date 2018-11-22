@@ -62,7 +62,7 @@ fun main(args: Array<String>) {
                 )
             }
             get("/todayirrigation") {
-            call.respond(IrrigationRepository().getNumberOfIrrigationToday())
+                call.respond(IrrigationRepository().getNumberOfIrrigationToday())
             }
 
         }
