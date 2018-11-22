@@ -58,8 +58,11 @@ fun main(args: Array<String>) {
             }
             get("/irrigation") {
                 call.respond(HttpStatusCode.OK,
-                       IrrigationRepository().getLastIrrigationList()
+                        IrrigationRepository().getLastIrrigationList()
                 )
+            }
+            get("/todayirrigation") {
+            call.respond(IrrigationRepository().getNumberOfIrrigationToday())
             }
 
         }
